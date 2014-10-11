@@ -6,22 +6,25 @@ class Directory
 	end
 
 	def add_student
-		puts "please enter the student's name"
-		name = gets.chomp
-		puts "please enter the student's cohort"
-		cohort = gets.chomp
-		puts "please enter the student's hobby"
-		hobby = gets.chomp
-		students << Student.new(name: name, cohort: cohort, hobby: hobby)
+		get_name
+		get_cohort
+		get_hobby
+		students << Student.new(name: @name, cohort: @cohort, hobby: @hobby)
 	end
 
 	def get_name
+		puts "please enter the student's name"
+		@name = gets.chomp
 	end
 
 	def get_cohort
+		puts "please enter the student's cohort"
+		@cohort = gets.chomp
 	end
 
 	def get_hobby
+		puts "please enter the student's hobby"
+		@hobby = gets.chomp
 	end
 
 
