@@ -49,4 +49,14 @@ class Directory
 		file.close
 	end
 
+	def load_students
+		file = File.open("students.csv", "r")
+		file.readlines.each do |line|
+			loaded_students = line.chomp.split(',')
+			add_student(name: loaded_students[0], cohort: loaded_students[1], hobby: loaded_students[2])
+		end
+		file.close
+
+	end
+
 end

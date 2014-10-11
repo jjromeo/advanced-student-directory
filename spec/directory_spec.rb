@@ -18,12 +18,29 @@ let(:directory) {Directory.new}
 		expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis."
 	end
 
-	it "should be able to write to a csv file" do 
-		FakeFS.activate!
-		directory.save_students
-		expect(File.exist?("students.csv")).to eq true
-		FakeFS.deactivate!
+	
+	context "using the file system" do
+		
+		before {
+			directory.add_student(name: "Jerome", cohort: "August", hobby: "basketball")
+			directory.add_student(name: "Peter", cohort: "September", hobby: "tennis")
+			FakeFS.activate!
+		}
+
+		after {
+			FakeFS.deactivate!
+		}
+
+		it "should be able to write student details to a csv file" do 
+			directory.save_students
+			expect(File.exist?("students.csv")).to eq true
+		end
+
+		it "should be able to read student details from a csv file" do
+			directory.save_students
+			directory2 = Directory.new
+			directory2.load_students
+			expect(directory2.students.first.name).to eq "Jerome"
+		end
 	end
-
-
 end
