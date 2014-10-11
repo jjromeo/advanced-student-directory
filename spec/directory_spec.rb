@@ -1,6 +1,8 @@
 require 'spec_helper'
 describe Directory do 
 
+include FakeFS::SpecHelpers
+
 let(:jerome) {double :student, name: "Jerome"}
 let(:directory) {Directory.new}
 
@@ -14,6 +16,13 @@ let(:directory) {Directory.new}
 		directory.add_student(name: "Jerome", cohort: "August", hobby: "basketball")
 		directory.add_student(name: "Peter", cohort: "September", hobby: "tennis")
 		expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis."
+	end
+
+	it "should be able to write to a csv file" do 
+		FakeFS.activate!
+		directory.save_students
+		expect(File.exist?("students.csv")).to eq true
+		FakeFS.deactivate!
 	end
 
 
