@@ -1,5 +1,4 @@
-require 'student'
-
+require 'spec_helper'
 describe Student do 
 
 	it "Can initialize with attributes" do
