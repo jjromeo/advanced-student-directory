@@ -51,13 +51,9 @@ def process(selection)
 end
 
 def students_with_parameters
-	@directory.parameters.inject do |accumulator, parameter|
-		if parameter == @directory.parameters.last
-			@directory.parameters[parameter.to_sym] = @directory.send("get_#{parameter}")
-		else
-			@directory.parameters[parameter.to_sym] = @directory.send("get_#{parameter}") + ","
-		end
-	end
+	Hash[@directory.parameters.map do |parameter|
+			[parameter.to_sym, @directory.send("get_#{parameter}")]
+	end]
 end
 
 interactive_menu
