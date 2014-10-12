@@ -13,18 +13,8 @@ let(:directory) {Directory.new}
 	end
 
 	it "should be able to display info about each student" do 
-		directory.add_student(name: "Jerome")
-		jerome = directory.find_student("Jerome")
-		jerome.add_cohort("August")
-		jerome.add_hobby("basketball")
-		jerome.add_dob("12/03/90")
-		jerome.add_cob("England")
-		directory.add_student(name: "Peter")
-		peter = directory.find_student("Peter")
-		peter.add_cohort("September")
-		peter.add_hobby("tennis")
-		peter.add_dob("01/01/01")
-		peter.add_cob("France")
+		add_student_jerome
+		add_student_peter
 		expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Additionally they were born on the 12/03/90 in England. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis. Additionally they were born on the 01/01/01 in France."
 	end
 
@@ -53,5 +43,23 @@ let(:directory) {Directory.new}
 			expect(directory2.students.first.name).to eq "Jerome"
 			expect(directory2.students.first.dob).to eq "12/03/1990"
 		end
+	end
+
+	def add_student_jerome
+		directory.add_student(name: "Jerome")
+		jerome = directory.find_student("Jerome")
+		jerome.add_cohort("August")
+		jerome.add_hobby("basketball")
+		jerome.add_dob("12/03/90")
+		jerome.add_cob("England")
+	end
+
+	def add_student_peter
+		directory.add_student(name: "Peter")
+		peter = directory.find_student("Peter")
+		peter.add_cohort("September")
+		peter.add_hobby("tennis")
+		peter.add_dob("01/01/01")
+		peter.add_cob("France")
 	end
 end
