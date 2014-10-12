@@ -5,7 +5,6 @@ class Student
 		@name = details[:name]
 		@cohort = details[:cohort]
 		@hobby = details[:hobby]
-		@statement = "is #{@name}, they are on the #{@cohort} Cohort and their hobby is #{@hobby}."
 	end
 
 	def method_missing(method, string)
