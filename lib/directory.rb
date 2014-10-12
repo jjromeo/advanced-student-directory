@@ -1,16 +1,16 @@
 class Directory
-	attr_accessor :students
+	attr_accessor :students, :parameters
 
 	def initialize
 		@students = []
+		@parameters = []
 	end
 
 	def add_student(details = {})
 		@name = details[:name]
-		# @cohort = details[:cohort]
-		# @hobby = details[:hobby]
 		students << Student.new(name: @name)
 		student = find_student(@name)
+		#all method_missing methods
 		student.add_cohort(details[:cohort])
 		student.add_hobby(details[:hobby])
 		student.add_dob(details[:dob])
@@ -25,6 +25,9 @@ class Directory
 		if method_has_get = (method.to_s.slice(0..3) == "get_")
 			puts "please enter the student's #{method.to_s.slice(4..-1)}"
 			gets.chomp
+		elsif method_has_set = (method.to_s.slice(0..3) == "set_")
+			parameters << method.to_s.slice(4..-1)
+		else super
 		end
 	end
 

@@ -6,6 +6,11 @@ include FakeFS::SpecHelpers
 let(:jerome) {double :student, name: "Jerome"}
 let(:directory) {Directory.new}
 
+	it "should be able to set the parameters it will take" do
+		directory.set_cohort
+		expect(directory.parameters.include?("cohort")).to eq true
+	end
+
 	it "should be able to create students" do 
 		expect(directory.students.count).to eq 0
 		directory.add_student
@@ -17,7 +22,6 @@ let(:directory) {Directory.new}
 		add_student_peter
 		expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Additionally they were born on the 12/03/90 in England. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis. Additionally they were born on the 01/01/01 in France."
 	end
-
 	
 	context "using the file system" do
 		
