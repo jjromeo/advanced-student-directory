@@ -3,18 +3,20 @@ class Directory
 
 	def initialize
 		@students = []
-		@parameters = []
+		@parameters = {}
 	end
 
 	def add_student(details = {})
 		@name = details[:name]
 		students << Student.new(name: @name)
-		student = find_student(@name)
-		#all method_missing methods
-		student.add_cohort(details[:cohort])
-		student.add_hobby(details[:hobby])
-		student.add_dob(details[:dob])
-		student.add_cob(details[:cob])
+		@student = find_student(@name)
+		set_cohort
+		set_hobby
+		set_dob
+		set_cob
+		parameters.each {|paramkey, paramvalue|
+			@student.send("add_#{paramkey}", details[paramkey.to_sym])
+		}
 	end
 
 	def find_student(name)
@@ -26,7 +28,7 @@ class Directory
 			puts "please enter the student's #{method.to_s.slice(4..-1)}"
 			gets.chomp
 		elsif method_has_set = (method.to_s.slice(0..3) == "set_")
-			parameters << method.to_s.slice(4..-1)
+			parameters.merge!(method.to_s.slice(4..-1).to_sym => "placeholder" )
 		else super
 		end
 	end
