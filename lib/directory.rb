@@ -10,6 +10,13 @@ class Directory
 		@cohort = details[:cohort]
 		@hobby = details[:hobby]
 		students << Student.new(name: @name, cohort: @cohort, hobby: @hobby)
+		student = find_student(@name)
+		student.add_dob(details[:dob])
+		student.add_cob(details[:cob])
+	end
+
+	def find_student(name)
+		students.find {|student| student.name == name}
 	end
 
 	def get_name
@@ -27,6 +34,16 @@ class Directory
 		gets.chomp
 	end
 
+	def get_dob
+		puts "please enter the student's dob"
+		gets.chomp
+	end
+
+	def get_cob
+		puts "please enter the student's cob"
+		gets.chomp
+	end
+
 	def summarise_students
 		statements = students.each_with_index.map {|student, i|
 			"Student number #{i + 1} " + student.statement
@@ -39,7 +56,7 @@ class Directory
 	def save_students
 		file = File.open("students.csv", "w")
 		students.each do |student|
-			student_data = [student.name, student.cohort, student.hobby]
+			student_data = [student.name, student.cohort, student.hobby, student.dob, student.cob]
 			csv_line = student_data.join(",")
 			file.puts(csv_line)
 		end
@@ -50,7 +67,7 @@ class Directory
 		file = File.open("students.csv", "r")
 		file.readlines.each do |line|
 			loaded_students = line.chomp.split(',')
-			add_student(name: loaded_students[0], cohort: loaded_students[1], hobby: loaded_students[2])
+			add_student(name: loaded_students[0], cohort: loaded_students[1], hobby: loaded_students[2], dob: loaded_students[3], cob: loaded_students[4])
 		end
 		file.close
 

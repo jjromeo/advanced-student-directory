@@ -1,1 +1,1 @@
-Iteration of the first project however using TDD and classes
+Iteration of the first project, this time using TDD, classes and metaprogramming
