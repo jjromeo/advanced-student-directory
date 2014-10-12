@@ -33,6 +33,7 @@ def set_parameters
 	end
 end
 
+
 def process(selection)
 	case selection
 	  when "1"
@@ -51,6 +52,7 @@ def process(selection)
 end
 
 def students_with_parameters
+	#currently setting things into a hash for directory rather than each student
 	Hash[@directory.parameters.map do |parameter|
 			[parameter.to_sym, @directory.send("get_#{parameter}")]
 	end]
