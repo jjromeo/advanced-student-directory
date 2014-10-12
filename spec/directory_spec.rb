@@ -17,11 +17,15 @@ let(:directory) {Directory.new}
 		jerome = directory.find_student("Jerome")
 		jerome.add_cohort("August")
 		jerome.add_hobby("basketball")
+		jerome.add_dob("12/03/90")
+		jerome.add_cob("England")
 		directory.add_student(name: "Peter")
 		peter = directory.find_student("Peter")
 		peter.add_cohort("September")
 		peter.add_hobby("tennis")
-		expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis."
+		peter.add_dob("01/01/01")
+		peter.add_cob("France")
+		expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Additionally they were born on the 12/03/90 in England. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis. Additionally they were born on the 01/01/01 in France."
 	end
 
 	

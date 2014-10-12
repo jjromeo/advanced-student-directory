@@ -48,7 +48,7 @@ class Directory
 
 	def summarise_students
 		statements = students.each_with_index.map {|student, i|
-			"Student number #{i + 1} " + "is #{student.name}, they are on the #{student.cohort} Cohort and their hobby is #{student.hobby}."
+			"Student number #{i + 1} " + "is #{student.name}, they are on the #{student.cohort} Cohort and their hobby is #{student.hobby}. Additionally they were born on the #{student.dob} in #{student.cob}."
 		}
 		statements.inject {|memo, student|
 			memo + " " + student
