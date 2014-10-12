@@ -19,6 +19,11 @@ describe Student do
 		expect(jerome.name).to eq "Peter"
 	end
 
+	it "can dynamically add attributes" do 
+		jerome = Student.new
+		jerome.add_dob("12/03/90")
+		expect(jerome.dob).to eq "12/03/90"
+	end
 
 
 end

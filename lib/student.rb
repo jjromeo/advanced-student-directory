@@ -8,4 +8,12 @@ class Student
 		@statement = "is #{@name}, they are on the #{@cohort} Cohort and their hobby is #{@hobby}."
 	end
 
+	def method_missing(method, string)
+		if method_has_add_ = (method.to_s.slice(0..3) == "add_")
+			instance_variable_set("@#{method.to_s.slice(4..-1)}", string)
+			self.class.send(:attr_accessor, method.to_s.slice(4..-1))
+		else super
+		end
+	end
+
 end
