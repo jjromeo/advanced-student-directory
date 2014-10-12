@@ -36,7 +36,7 @@ end
 def process(selection)
 	case selection
 	  when "1"
-	  	@directory.add_student(name: @directory.get_name, cohort: @directory.get_cohort, hobby: @directory.get_hobby, dob: @directory.get_dob, cob: @directory.get_cob)
+	  	@directory.add_student(students_with_parameters)
 	  when "2"
 	  	puts @directory.summarise_students
 	  when "3"

@@ -8,7 +8,7 @@ let(:directory) {Directory.new}
 
 	it "should be able to set the parameters it will take" do
 		directory.set_cohort
-		expect(directory.parameters.include?(:cohort)).to eq true
+		expect(directory.parameters.include?("cohort")).to eq true
 	end
 
 	it "should be able to create students" do 

@@ -3,7 +3,7 @@ class Directory
 
 	def initialize
 		@students = []
-		@parameters = {}
+		@parameters = []
 	end
 
 	def add_student(details = {})
@@ -14,8 +14,8 @@ class Directory
 		set_hobby
 		set_dob
 		set_cob
-		parameters.each {|paramkey, paramvalue|
-			@student.send("add_#{paramkey}", details[paramkey.to_sym])
+		parameters.each {|parameter|
+			@student.send("add_#{parameter}", details[parameter.to_sym])
 		}
 	end
 
@@ -28,7 +28,7 @@ class Directory
 			puts "please enter the student's #{method.to_s.slice(4..-1)}"
 			gets.chomp
 		elsif method_has_set = (method.to_s.slice(0..3) == "set_")
-			parameters.merge!(method.to_s.slice(4..-1).to_sym => "placeholder" )
+			parameters << method.to_s.slice(4..-1)
 		else super
 		end
 	end
