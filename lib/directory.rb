@@ -21,29 +21,11 @@ class Directory
 		students.find {|student| student.name == name}
 	end
 
-	def get_name
-		puts "please enter the student's name"
-		gets.chomp
-	end
-
-	def get_cohort
-		puts "please enter the student's cohort"
-		gets.chomp
-	end
-
-	def get_hobby
-		puts "please enter the student's hobby"
-		gets.chomp
-	end
-
-	def get_dob
-		puts "please enter the student's dob"
-		gets.chomp
-	end
-
-	def get_cob
-		puts "please enter the student's cob"
-		gets.chomp
+	def method_missing(method)
+		if method_has_get = (method.to_s.slice(0..3) == "get_")
+			puts "please enter the student's #{method.to_s.slice(4..-1)}"
+			gets.chomp
+		end
 	end
 
 	def summarise_students

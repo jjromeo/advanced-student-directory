@@ -22,8 +22,8 @@ let(:directory) {Directory.new}
 	context "using the file system" do
 		
 		before {
-			directory.add_student(name: "Jerome", cohort: "August", hobby: "basketball", dob: "12/03/1990", cob: "England")
-			directory.add_student(name: "Peter", cohort: "September", hobby: "tennis", dob: "07/05/1979", cob: "Madagascar")
+			add_student_jerome
+			add_student_peter
 			FakeFS.activate!
 		}
 
@@ -41,7 +41,7 @@ let(:directory) {Directory.new}
 			directory2 = Directory.new
 			directory2.load_students
 			expect(directory2.students.first.name).to eq "Jerome"
-			expect(directory2.students.first.dob).to eq "12/03/1990"
+			expect(directory2.students.first.dob).to eq "12/03/90"
 		end
 	end
 
