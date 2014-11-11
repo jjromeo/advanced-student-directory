@@ -10,10 +10,6 @@ class Directory
 		@name = details[:name]
 		students << Student.new(name: @name)
 		@student = find_student(@name)
-		set_cohort
-		set_hobby
-		set_dob
-		set_cob
 		parameters.each {|parameter|
 			@student.send("add_#{parameter}", details[parameter.to_sym])
 		}

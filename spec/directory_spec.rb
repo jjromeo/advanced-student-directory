@@ -43,6 +43,7 @@ let(:directory) {Directory.new}
 		it "should be able to read student details from a csv file" do
 			directory.save_students
 			directory2 = Directory.new
+            directory2.set_dob
 			directory2.load_students
 			expect(directory2.students.first.name).to eq "Jerome"
 			expect(directory2.students.first.dob).to eq "12/03/90"
