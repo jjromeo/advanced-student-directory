@@ -8,10 +8,12 @@ describe Student do
 		expect(jerome.hobby).to eq "basketball"
 	end
 
-	# it "can create a statement about itself" do 
-	# 	jerome = Student.new(name: "Jerome", cohort: "August", hobby: "basketball")
-	# 	expect(jerome.statement).to eq "is Jerome, they are on the August Cohort and their hobby is basketball."
-	# end
+    it "can initialize with any random attributes" do 
+        jamie = Student.new(name: "Jamie", star_sign: "Pisces", dream: "to be a millionaire")
+        expect(jamie.name).to eq "Jamie"
+        expect(jamie.star_sign).to eq "Pisces"
+        expect(jamie.dream).to eq "to be a millionaire"
+    end
 
 	it "can change attributes" do
 		jerome = Student.new(name: "Jerome", cohort: "August", hobby: "basketball")

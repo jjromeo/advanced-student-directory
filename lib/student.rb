@@ -5,7 +5,7 @@ class Student
         if details.class == String
             details = eval details
         end
-        @name = details[:name]
+        @name = details[:name] || "no name given"
         details.each {|key, value| instance_variable_set("@#{key.to_s}", details[key.to_sym]) 
                       self.class.send(:attr_accessor, key.to_sym)
         }
