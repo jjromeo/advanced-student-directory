@@ -64,20 +64,18 @@ let(:directory2) {Directory.new}
 
 
 	def add_student_jerome
-		directory.add_student(name: "Jerome")
-		jerome = directory.find_student("Jerome")
-		jerome.add_cohort("August")
-		jerome.add_hobby("basketball")
-		jerome.add_dob("12/03/90")
-		jerome.add_cob("England")
+		directory.add_student(name: "Jerome",
+                              cohort: "August",
+                              hobby: "basketball",
+                              dob: "12/03/90",
+                              cob: "England")
 	end
 
 	def add_student_peter
-		directory.add_student(name: "Peter")
-		peter = directory.find_student("Peter")
-		peter.add_cohort("September")
-		peter.add_hobby("tennis")
-		peter.add_dob("01/01/01")
-		peter.add_cob("France")
+		directory.add_student(name: "Peter",
+                              cohort: "September",
+                              hobby: "tennis",
+                              dob: "01/01/01",
+                              cob: "France")
 	end
 end

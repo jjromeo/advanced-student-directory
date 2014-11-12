@@ -8,8 +8,7 @@ class Directory
 	end
 
 	def add_student(details = {})
-        deets = details.map {|key, value|{key => value}}
-        student_params = deets.each {|detail| detail}.inject({}) {|accu, elem| accu.merge(elem)}.inspect
+        student_params = [details].each {|detail| detail}.inject({}) {|accu, elem| accu.merge(elem)}.inspect
         new_student = Student.new(student_params)
 		students << new_student 
 		@student = find_student(new_student.name)
