@@ -6,7 +6,9 @@ class Student
             details = eval details
         end
         @name = details[:name]
-        details.each {|key, value| instance_variable_set("@#{key.to_s}", details[key.to_sym])}
+        details.each {|key, value| instance_variable_set("@#{key.to_s}", details[key.to_sym]) 
+                      self.class.send(:attr_accessor, key.to_sym)
+        }
 	end
 
 	def method_missing(method, string)

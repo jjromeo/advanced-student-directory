@@ -5,6 +5,7 @@ include FakeFS::SpecHelpers
 
 let(:jerome) {double :student, name: "Jerome"}
 let(:directory) {Directory.new}
+let(:directory2) {Directory.new}
 
 	it "should be able to set the parameters it will take" do
 		directory.set_cohort
@@ -41,18 +42,26 @@ let(:directory) {Directory.new}
 		end
 
 		it "should be able to read student details from a csv file" do
-            directory.set_dob
-            directory.set_cob
-			directory.save_students
-			directory2 = Directory.new
-            directory2.set_dob
-            directory2.set_cob
+            directory_set_up
+            directory2_set_up
 			directory2.load_students
 			expect(directory2.students.first.name).to eq "Jerome"
 			expect(directory2.students.first.dob).to eq "12/03/90"
 			expect(directory2.students.first.cob).to eq "England"
 		end
 	end
+
+    def directory_set_up
+        directory.set_dob
+        directory.set_cob
+        directory.save_students
+    end
+    
+    def directory2_set_up
+        directory2.set_dob
+        directory2.set_cob
+    end
+
 
 	def add_student_jerome
 		directory.add_student(name: "Jerome")
