@@ -2,7 +2,11 @@ class Student
 	attr_accessor :name, :cohort, :hobby
 
 	def initialize(details = {})
-        details.each {|key, value| instance_variable_set("@#{key.to_s}", details[key])}
+        if details.class == String
+            details = eval details
+        end
+        @name = details[:name]
+        details.each {|key, value| instance_variable_set("@#{key.to_s}", details[key.to_sym])}
 	end
 
 	def method_missing(method, string)

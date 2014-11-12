@@ -4,12 +4,15 @@ class Directory
 	def initialize
 		@students = []
 		@parameters = []
+        set_name
 	end
 
 	def add_student(details = {})
-		@name = details[:name]
-		students << Student.new(name: @name)
-		@student = find_student(@name)
+        deets = details.map {|key, value|{key => value}}
+        student_params = deets.each {|detail| detail}.inject({}) {|accu, elem| accu.merge(elem)}.inspect
+        new_student = Student.new(student_params)
+		students << new_student 
+		@student = find_student(new_student.name)
 		parameters.each {|parameter|
 			@student.send("add_#{parameter}", details[parameter.to_sym])
 		}
@@ -41,7 +44,7 @@ class Directory
 	def save_students
 		file = File.open("students.csv", "w")
 		students.each do |student|
-			student_data = [student.name, student.cohort, student.hobby, student.dob, student.cob]
+            student_data = parameters.map { |param| {param.to_sym => student.send(param.to_sym)} }
 			csv_line = student_data.join(",")
 			file.puts(csv_line)
 		end
@@ -52,7 +55,10 @@ class Directory
 		file = File.open("students.csv", "r")
 		file.readlines.each do |line|
 			loaded_students = line.chomp.split(',')
-			add_student(name: loaded_students[0], cohort: loaded_students[1], hobby: loaded_students[2], dob: loaded_students[3], cob: loaded_students[4])
+            loaded_students.inject({}) do |accu, student|
+                student.class == String ? @injection = accu.merge(eval student) : @injection = accu.merge(student)
+            end 
+            add_student(@injection)
 		end
 		file.close
 
