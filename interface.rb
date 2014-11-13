@@ -2,7 +2,6 @@ require './lib/directory.rb'
 require './lib/student.rb'
 
 @directory = Directory.new
-
 def interactive_menu
 	loop do
 		if @directory.parameters.empty?
@@ -19,13 +18,15 @@ def print_menu
 	puts "2. Show the students"
 	puts "3. Save the list to students.csv"
 	puts "4. Load the list from students.csv"
+    puts "5. List the parameters you are currently requesting for each student"
+    puts "6. Set the parameters you would like to get for each student (name is there by default)"
 	puts "9. Exit" #9 because we'll be adding more items
 end
 
 def set_parameters
 	loop do
-		puts "Please enter the parameters you would like to take for each student, press enter twice when finished"
-		parameter = gets.chomp
+		puts "Please enter the parameters you would like to take for each student(no punctuation), press enter twice when finished"
+		parameter = gets.chomp.gsub(/(\W|\d)/, "_").downcase
 		unless parameter == ""
 			@directory.send("set_#{parameter}")
 		end
@@ -33,6 +34,12 @@ def set_parameters
 	end
 end
 
+def list_parameters
+    puts "You are currently asking for:"
+    @directory.parameters.each do |param|
+        puts param
+    end
+end
 
 def process(selection)
 	case selection
@@ -44,6 +51,10 @@ def process(selection)
 	  	@directory.save_students
 	  when "4"
 		@directory.load_students
+      when "5"
+        list_parameters
+      when "6"
+        set_parameters
 	  when "9"
 		exit # this will cause the program to terminate
 	  else
@@ -57,5 +68,4 @@ def students_with_parameters
 			[parameter.to_sym, @directory.send("get_#{parameter}")]
 	end]
 end
-
 interactive_menu
