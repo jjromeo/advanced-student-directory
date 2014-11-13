@@ -33,17 +33,21 @@ class Directory
 	end
 
 	def summarise_students
-		statements = students.each_with_index.map {|student, i|
-            parameters.map do |param|
-                if student.instance_variable_defined?("@#{param}")
-                    {param => student.send(param)}
-                end
+        @statement_array = []                
+        students.each_with_index do |student, index|
+            parameters.each do |param|
+                @statement_array << {param => student.send(param)} 
             end
-#			"Student number #{i + 1} " + "is #{student.name}, they are on the #{student.cohort} Cohort and their hobby is #{student.hobby}. Additionally they were born on the #{student.dob} in #{student.cob}."
-		}
-		statements.flatten.inject {|memo, student|
-    		memo.merge(student)
-		}
+                @statement_array << "\n"
+       @statements = @statement_array.inject("") {|accu, pair|
+           if pair.respond_to?(:keys)
+                accu + "#{pair.keys.first.capitalize}: #{pair.values.first.to_s} \n" 
+           else
+               accu + pair
+           end
+            }
+        end
+           p  @statements
 	end
 
 	def save_students

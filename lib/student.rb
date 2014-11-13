@@ -11,7 +11,7 @@ class Student
         }
 	end
 
-	def method_missing(method, string)
+	def method_missing(method, string = nil )
 		if method_has_add_ = (method.to_s.slice(0..3) == "add_")
 			instance_variable_set("@#{method.to_s.slice(4..-1)}", string)
 			self.class.send(:attr_accessor, method.to_s.slice(4..-1))

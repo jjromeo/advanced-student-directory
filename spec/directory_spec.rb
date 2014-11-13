@@ -35,8 +35,7 @@ let(:directory2) {Directory.new}
 	it "should be able to display info about each student" do 
 		add_student_jerome
 		add_student_peter
-        expect(directory.summarise_students).to eq " 1. Jerome: \n cohort: August \n hobby: Basketball \n dob: 12/03/1990 \n cob: England \n \n 2. Peter: \n cohort: September \n hobby: tennis \n dob: 01/01/01 \n cob: France \n"
-		#expect(directory.summarise_students).to eq "Student number 1 is Jerome, they are on the August Cohort and their hobby is basketball. Additionally they were born on the 12/03/90 in England. Student number 2 is Peter, they are on the September Cohort and their hobby is tennis. Additionally they were born on the 01/01/01 in France."
+        expect(directory.summarise_students).to eq "Name: Jerome \nCohort: August \nHobby: basketball \nDob: 12/03/90 \nCob: England \n\nName: Peter \nCohort: September \nHobby: tennis \nDob: 01/01/01 \nCob: France \n\n"
 	end
 	
 	context "using the file system" do
