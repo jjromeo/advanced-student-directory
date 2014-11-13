@@ -41,9 +41,21 @@ class Directory
             end
 #			"Student number #{i + 1} " + "is #{student.name}, they are on the #{student.cohort} Cohort and their hobby is #{student.hobby}. Additionally they were born on the #{student.dob} in #{student.cob}."
 		}
-		statements.flatten.inject {|memo, student|
-    		memo.merge(student)
-		}
+            new_statements = statements.flatten.inject {|memo, student|
+                memo.merge(student)
+            }
+            statements.each_with_index do |statement, index|
+            statement = new_statements.inject do |accu, (key, value)|
+                @to_inject = Array.new
+                if key == :name
+                    @to_inject << "\n #{index}. #{value} \n"
+                else 
+                    @to_inject << "#{key}: #{value} \n"
+                 "#{index + 1 } hello  #{key}: #{value}"
+                end
+            end
+        end 
+            return @to_inject.inject {|accu, param| accu + param}
 	end
 
 	def save_students
