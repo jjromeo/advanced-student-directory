@@ -37,11 +37,16 @@ class Directory
     end
 
     def method_missing(method)
-        if method_has_get = (method.to_s.slice(0..3) == "get_")
-            puts "please enter the student's #{method.to_s.slice(4..-1)}"
+        method_string = method.to_s ; param, get_or_set = method_string.slice(4..-1).to_sym, method_string.slice(0..3)
+        decide_method(get_or_set, param)
+    end
+
+    def decide_method(get_or_set, param)
+        if method_has_get = (get_or_set == "get_")
+            puts "please enter the student's #{param}"
             gets.chomp
-        elsif method_has_set = (method.to_s.slice(0..3) == "set_")
-            parameters << method.to_s.slice(4..-1).to_sym
+        elsif method_has_set = (get_or_set == "set_")
+            parameters << param
         else super
         end
     end
@@ -49,10 +54,20 @@ class Directory
     def summarise_students
         @statement_array = []                
         students.each_with_index do |student, index|
+            create_statements(student)
+            compact_statements
+        end
+        @statements
+    end
+
+    def create_statements(student)
             parameters.each do |param|
                 @statement_array << {param => student.send(param)} 
             end
             @statement_array << "\n"
+    end
+
+    def compact_statements
             @statements = @statement_array.inject("") {|accu, pair|
                 if pair.respond_to?(:keys)
                     accu + "#{pair.keys.first.capitalize.to_s.gsub("_", " ")}: #{pair.values.first.to_s} \n" 
@@ -60,31 +75,39 @@ class Directory
                     accu + pair
                 end
             }
-        end
-        @statements
+
     end
 
     def save_students
         file = File.open("students.csv", "w")
         students.each do |student|
-            student_data = parameters.map { |param| {param.to_sym => student.send(param.to_sym)} }
-            csv_line = student_data.join(",")
-            file.puts(csv_line)
+            map_student_data(student)
+            file.puts(@csv_line)
         end
         file.close
     end
+
+    def map_student_data(student)
+            student_data = parameters.map { |param| param_s = param.to_sym; {param_s => student.send(param_s)} }
+            @csv_line = student_data.join(",")
+    end
+
 
     def load_students
         file = File.open("students.csv", "r")
         file.readlines.each do |line|
-            loaded_students = line.chomp.split(',')
-            loaded_students.inject({}) do |accu, student|
-                student.class == String ? @injection = accu.merge(eval student) : @injection = accu.merge(student)
-            end 
+            format_students(line)
             add_student(@injection)
-        end
+            end 
         file.close
-
     end
+
+    def format_students(line)
+        loaded_students = line.chomp.split(',')
+        loaded_students.inject({}) do |accu, student|
+            student.class == String ? @injection = accu.merge(eval student) : @injection = accu.merge(student)
+        end
+    end
+
 
 end
