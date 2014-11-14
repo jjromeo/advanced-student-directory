@@ -9,13 +9,27 @@ class Directory
 
     def add_student(details = {})
         student_params = [details].each {|detail| detail}.inject({}) {|accu, elem| accu.merge(elem)}
-        new_student = Student.new(student_params)
-        student_params.each {|key, value|parameters << key unless parameters.include?(key)}
-        students << new_student 
-        @student = find_student(new_student.name)
+        create_student(student_params)
+        update_student(details)
+    end
+
+    def update_student(details)
+        @student = find_student(@new_student.name)
+        add_param_to_student(details)
+    end
+    
+
+    def add_param_to_student(details)
         parameters.each {|parameter|
-            @student.send("add_#{parameter}", details[parameter.to_sym]) if details[parameter.to_sym]
+            detail = details[parameter.to_sym]
+            @student.send("add_#{parameter}", detail) if detail
         }
+    end
+        
+    def create_student(student_params)
+        @new_student = Student.new(student_params)
+        student_params.each {|key, value|parameters << key unless parameters.include?(key)}
+        students << @new_student 
     end
 
     def find_student(name)
