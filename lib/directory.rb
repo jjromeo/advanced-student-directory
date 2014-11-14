@@ -12,19 +12,6 @@ class Directory
         create_student(student_params)
         update_student(details)
     end
-
-    def update_student(details)
-        @student = find_student(@new_student.name)
-        add_param_to_student(details)
-    end
-    
-
-    def add_param_to_student(details)
-        parameters.each {|parameter|
-            detail = details[parameter.to_sym]
-            @student.send("add_#{parameter}", detail) if detail
-        }
-    end
         
     def create_student(student_params)
         @new_student = Student.new(student_params)
@@ -41,16 +28,6 @@ class Directory
         decide_method(get_or_set, param)
     end
 
-    def decide_method(get_or_set, param)
-        if method_has_get = (get_or_set == "get_")
-            puts "please enter the student's #{param}"
-            gets.chomp
-        elsif method_has_set = (get_or_set == "set_")
-            parameters << param
-        else super
-        end
-    end
-
     def summarise_students
         @statement_array = []                
         students.each_with_index do |student, index|
@@ -58,6 +35,38 @@ class Directory
             compact_statements
         end
         @statements
+    end
+
+    def save_students
+        file = File.open("students.csv", "w")
+        students.each do |student|
+            map_student_data(student)
+            file.puts(@csv_line)
+        end
+        file.close
+    end
+
+    def load_students
+        file = File.open("students.csv", "r")
+        file.readlines.each do |line|
+            format_students(line)
+            add_student(@injection)
+            end 
+        file.close
+    end
+    
+    private
+
+    def map_student_data(student)
+            student_data = parameters.map { |param| param_s = param.to_sym; {param_s => student.send(param_s)} }
+            @csv_line = student_data.join(",")
+    end
+
+    def format_students(line)
+        loaded_students = line.chomp.split(',')
+        loaded_students.inject({}) do |accu, student|
+            student.class == String ? @injection = accu.merge(eval student) : @injection = accu.merge(student)
+        end
     end
 
     def create_statements(student)
@@ -75,39 +84,28 @@ class Directory
                     accu + pair
                 end
             }
-
     end
 
-    def save_students
-        file = File.open("students.csv", "w")
-        students.each do |student|
-            map_student_data(student)
-            file.puts(@csv_line)
-        end
-        file.close
-    end
-
-    def map_student_data(student)
-            student_data = parameters.map { |param| param_s = param.to_sym; {param_s => student.send(param_s)} }
-            @csv_line = student_data.join(",")
-    end
-
-
-    def load_students
-        file = File.open("students.csv", "r")
-        file.readlines.each do |line|
-            format_students(line)
-            add_student(@injection)
-            end 
-        file.close
-    end
-
-    def format_students(line)
-        loaded_students = line.chomp.split(',')
-        loaded_students.inject({}) do |accu, student|
-            student.class == String ? @injection = accu.merge(eval student) : @injection = accu.merge(student)
+    def decide_method(get_or_set, param)
+        if method_has_get = (get_or_set == "get_")
+            puts "please enter the student's #{param}"
+            gets.chomp
+        elsif method_has_set = (get_or_set == "set_")
+            parameters << param
+        else super
         end
     end
 
+    def update_student(details)
+        @student = find_student(@new_student.name)
+        add_param_to_student(details)
+    end
+    
+    def add_param_to_student(details)
+        parameters.each {|parameter|
+            detail = details[parameter.to_sym]
+            @student.send("add_#{parameter}", detail) if detail
+        }
+    end
 
 end
