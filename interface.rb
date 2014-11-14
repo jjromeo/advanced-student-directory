@@ -25,7 +25,7 @@ end
 
 def set_parameters
 	loop do
-		puts "Please enter the parameters you would like to take for each student(no punctuation), press enter twice when finished"
+		puts "Please enter the parameters you would like to take for each student, press enter twice when finished"
 		parameter = gets.chomp.gsub(/(\W|\d)/, "_").downcase
 		unless parameter == ""
 			@directory.send("set_#{parameter}")
