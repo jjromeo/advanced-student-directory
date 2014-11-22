@@ -8,25 +8,17 @@ class Directory
     end
 
     def add_student(details = {})
-        student_params = [details].each {|detail| detail}.inject({}) {|accu, elem| accu.merge(elem)}
-        create_student(student_params)
+        create_student(details)
         update_student(details)
     end
         
-    def create_student(student_params)
-        @new_student = Student.new(student_params)
-        student_params.each {|key, value|parameters << key unless parameters.include?(key)}
-        students << @new_student 
-    end
 
-    def find_student(name)
-        students.find {|student| student.name == name}
-    end
 
     def method_missing(method)
         method_string = method.to_s ; param, get_or_set = method_string.slice(4..-1).to_sym, method_string.slice(0..3)
         decide_method(get_or_set, param)
     end
+
 
     def summarise_students
         @statement_array = []                
@@ -54,8 +46,30 @@ class Directory
             end 
         file.close
     end
+
+    def find_student(name)
+        students.find {|student| student.name == name}
+    end
     
     private
+
+    def create_student(student_params)
+        @new_student = Student.new(student_params)
+        student_params.each {|key, value| parameters << key unless parameters.include?(key)}
+        students << @new_student 
+    end
+
+    def update_student(details)
+        @student = find_student(@new_student.name)
+        add_param_to_student(details)
+    end
+
+    def add_param_to_student(details)
+        parameters.each {|parameter|
+            detail = details[parameter.to_sym]
+            @student.send("add_#{parameter}", detail) if detail
+        }
+    end
 
     def map_student_data(student)
             student_data = parameters.map { |param| param_s = param.to_sym; {param_s => student.send(param_s)} }
@@ -96,16 +110,6 @@ class Directory
         end
     end
 
-    def update_student(details)
-        @student = find_student(@new_student.name)
-        add_param_to_student(details)
-    end
     
-    def add_param_to_student(details)
-        parameters.each {|parameter|
-            detail = details[parameter.to_sym]
-            @student.send("add_#{parameter}", detail) if detail
-        }
-    end
 
 end
