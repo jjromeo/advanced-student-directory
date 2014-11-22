@@ -15,8 +15,9 @@ class Directory
 
 
     def method_missing(method)
-        method_string = method.to_s ; param, get_or_set = method_string.slice(4..-1).to_sym, method_string.slice(0..3)
-        decide_method(get_or_set, param)
+        method_string = method.to_s ; 
+        param, prefix = method_string.slice(4..-1).to_sym, method_string.slice(0..3)
+        decide_method(prefix, param)
     end
 
 
